@@ -1,19 +1,21 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import os
 import operator
-from typing import Annotated, TypedDict
+import typing
 
 from dotenv import load_dotenv
-from langchain.chat_models import ChatOpenAI
-from langchain_core.messages import BaseMessage, HumanMessage
-from langgraph.graph import END, StateGraph
+from langchain_openai import ChatOpenAI
+from langchain_core.messages import BaseMessage, HumanMessage, SystemMessage
+from langgraph.graph import StateGraph, START, END
+
+
+model = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
 
 load_dotenv()
 
-
-class SupportState(TypedDict):
-    messages: Annotated[list[BaseMessage], operator.add]
+class SupportState(typing.TypedDict):
+    messages: typing.Annotated[list[BaseMessage], operator.add]
     should_escalate: bool
     issue_type: str
     user_tier: str  # "vip" or "standard"
@@ -38,14 +40,14 @@ def vip_agent_node(state: SupportState) -> dict:
     """VIP path: fast lane, no escalation."""
     # This demonstrates using a LangChain chat model.
     if os.getenv("OPENAI_API_KEY"):
-        model = ChatOpenAI(temperature=0)
+        model = langchain_openai.ChatOpenAI(temperature=0)
         prompt = (
             "You are a VIP support assistant. Respond concisely and professionally "
             "to the user message:\n\n"
             f"{state['messages'][-1].content}"
         )
         try:
-            _ = model.generate_messages([HumanMessage(content=prompt)])
+            _ = model.generate_messages([langchain_core.messages.HumanMessage(content=prompt)])
         except Exception:
             pass
 
