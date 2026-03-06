@@ -1,25 +1,37 @@
-# Agentic Day 2
+# Agentic Day 2 - Routing
 
-This project demonstrates a simple AI application using LangChain and OpenAI.
+Minimal LangGraph workflow demonstrating typed state, explicit routing logic, and tier-based paths.
 
-## 🚀 How to Run
+## 🚀 Setup
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-username/agentic-day1.git
-   cd agentic-day1
+1. Create and activate a Python environment (recommended):
+   ```powershell
+   python -m venv .venv
+   .\.venv\Scripts\Activate.ps1
+   ```
 
-create and activate the conda environment
-   conda create -n agentic python=3.10
-conda activate agentic
+2. Install dependencies:
+   ```powershell
+   pip install -r requirements.txt
+   ```
 
-install dependencies
-pip install -r requirements.txt
+3. Add an `.env` file with your OpenAI key:
+   ```text
+   OPENAI_API_KEY=sk-...your key...
+   ```
 
-Add your API Key in OPENAI_API_KEY
- Important:
-- Do not commit .env to GitHub. It contains sensitive credentials.
-- Add .env to .gitignore to keep it private.
-Run the app:
+   > Note: `.env` is excluded from git via `.gitignore`.
+
+## ▶️ Run
+
+```powershell
 python app.py
+```
+
+## ✅ What it demonstrates
+
+- A typed `SupportState` (`TypedDict`) tracked across the workflow
+- Explicit, testable routing logic (`route_by_tier`) for `vip` vs `standard`
+- LangGraph `StateGraph` wiring with conditional edges
+- Optional LangChain `ChatOpenAI` usage in the VIP path (if `OPENAI_API_KEY` is set)
 
